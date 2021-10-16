@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css')}}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+	<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+	<title> AutoTraffic </title>
+</head>
+<body>	
+	<div class="container">
+		<div class="row header">
+			<div class="col-md-12 col-lg-2 text-info header-text">
+				<img class='logo' src="{{ url_for('static', filename='img/icon.svg')}}">
+			</div>
+			<div class="header-text col-12 col-lg-3 h2 text-info">
+				<a href="/main" style="color: black;display: block !important;text-align: center !important;">AutoTraffic</a>
+			</div>
+			<div class="col-12 col-lg-4 h2 text-info header-text">
+				<a href="/app" style="color: black;display: block !important;text-align: center !important;">Онлайн-сервис</a>
+			</div>
+			<div class="col-12 col-lg-3 text-info header-text">
+				<a href="/info" style="color: black;display: block !important;text-align: center !important;">Api</a>
+			</div>
+		</div>
+
+		<div class="row title">
+			<span class="text-info up">
+				Наше API позволяет определять на фотографиях знаков дорожного движения полосы.
+			</span>
+		</div>
+		
+
+		<div class="row">
+			<form name="" method="post" action="/predict" enctype="multipart/form-data" class="feedback-form-1">
+				<span class="text-info up">
+					Выберите файл:
+				</span>
+        		<input type="file" id="file" name="file" onchange="showPreviewOne(event);"/>
+        		<button class="button-send">Отправить</button>
+
+			</form>
+		</div>	
+		<div class="row">
+			<div class="col-md-3"></div>
+			<div class="col-md-6"><img id="thumb" src=""></div>
+			<div class="col-md-3"></div>
+		</div>
+		<div class="row">
+			<span class="text-info" id="output">
+				
+			</span>
+		</div>
+		<script>
+			$(document).ready(function (e) {
+			    $('.feedback-form-1').on('submit',(function(e) {
+			        e.preventDefault();
+			        var formData = new FormData(this);
+			        formData.append("model", "classification");
+
+			        $.ajax({
+			            type:'POST',
+			            url: $(this).attr('action'),
+			            data:formData,
+			            cache:false,
+			            contentType: false,
+			            processData: false,
+			            success:function(data){
+			            	console.log(data);
+			                document.getElementById('output').innerHTML = data['label'];
+			            },
+			            error: function(data){
+			                console.log("error");
+			                console.log(data);
+			            }
+			        });
+			    }));
+
+			    $("#ImageBrowse").on("change", function() {
+			        $("#imageUploadForm").submit();
+			    });
+			});
+		</script>
+		<script>
+			function showPreviewOne(event){
+		      if(event.target.files.length > 0){
+		        let src = URL.createObjectURL(event.target.files[0]);
+		        let preview = document.getElementById("thumb");
+		        preview.src = src;
+		        preview.style.opacity = 1;
+		      } 
+		    }
+
+		</script>
+		
+
+
+
+		<div class="row footer">
+			<div class="col-md-5"></div>
+			<div class="col-md-2">
+				<div class="row">
+					<span class="footer-text">
+						by DatenKrieg<br>
+					</span>
+				</div>
+				<div class="row">
+					<span class="footer-text">
+						2021
+					</span>
+				</div>
+			</div>
+			<div class="col-md-5"></div>
+		</div>
+	</div>
+</body>
+</html>

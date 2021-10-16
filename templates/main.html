@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css')}}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+	<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+	<title> AutoTraffic </title>
+</head>
+<body>	
+	<div class="container">
+		<div class="row header">
+			<div class="col-md-12 col-lg-2">
+				<img class='logo' src="{{ url_for('static', filename='img/icon.svg')}}">
+			</div>
+			<div class="header-text col-12 col-lg-3 h2 text-info">
+				<a href="/main" style="color: black;display: block !important;text-align: center !important;">AutoTraffic</a>
+			</div>
+			<div class="col-12 col-lg-4 h2 text-info header-text">
+				<a href="/app" style="color: black;display: block !important;text-align: center !important;">Онлайн-сервис</a>
+			</div>
+			<div class="col-12 col-lg-3 text-info header-text">
+				<a href="/info" style="color: black;display: block !important;text-align: center !important;">Api</a>
+			</div>
+		</div>
+		<div class="row title">
+			<span class="text-info up">
+				Наше API позволяет определять на фотографиях знаков дорожного движения полосы. Дальнейшая инструкция показывает как использовать API в Python
+			</span>
+		</div>
+		<div class="row">
+			<span class="text-info">
+				Для начала необходимо импортировать нужные библиотеки:
+			</span>
+		</div>
+		<div class="row">
+			<code>
+				import requests<br>
+				import json
+			</code>
+		</div>
+		<div class="row">
+			<span class="text-info">
+				С помошью нашего API можно выполнить две операции: <br>
+				<ul>
+					<li>Классифицировать знак(то есть определить, в каких направлениях можно продолжать дальнейшее движение)</li>
+					<li>Детектировать направления на знаке(то есть не только определить в каких направлениях можно ехать, но и получить расположение каждого направления на знаке)</li>
+				</ul>
+			</span>
+		</div>
+
+		<div class="row">
+			<div class="img" src="{{ url_for('static', filename='img/znak.jpg')}}"></div>
+		</div>
+		<div class="row">
+			<span class="text-info up">
+				Классификация
+			</span>
+		</div>
+		<div class="row ">
+			<code>
+				data = {
+    				'model': 'classification'
+				}
+				<br>
+				files = {'file': open('image.jpg','rb')}
+			</code>
+		</div>
+		<div class="row">
+			<span class="text-info">
+				Для отправки запроса воспользуемся модулем requests, а для расшифровки ответа &mdash; json:
+			</span>
+		</div>
+		<div class="row">
+			<code>
+				q = json.loads(requests.post('http://01a4-37-146-116-128.ngrok.io/predict', data=data, files=files).text)<br>
+				print(q)
+			</code>
+		</div>
+
+		<div class="row">
+			<span class="text-info">
+				В результате сервер пришлёт ответ в таком формате:
+			</span>
+		</div>
+
+		<div class="row">
+			<code>
+				{'label': 'Слегка налево,Слегка налево,Направо'}
+			</code>
+		</div>
+
+		<div class="row">
+			<span class="text-info up">
+				Детекция
+			</span>
+		</div>
+		<div class="row ">
+			<code>
+				data = {
+    				'model': 'detection'
+				}
+				<br>
+				files = {'file': open('image.jpg','rb')}
+			</code>
+		</div>
+		<div class="row">
+			<span class="text-info">
+				Аналогично, как и классификация. Но необходимо учитывать, что ответ от сервера &mdash; список:
+			</span>
+		</div>
+		<div class="row">
+			<code>
+				q = json.loads(requests.post('http://01a4-37-146-116-128.ngrok.io/predict', data=data, files=files).text)<br>
+				print(q)
+			</code>
+		</div>
+
+		<div class="row">
+			<span class="text-info">
+				Результат:
+			</span>
+		</div>
+
+		<div class="row end">
+			<code>
+				{'bbox': [[1, 0.275390625, 0.5, 0.30078125, 1.0], [1, 0.28125, 0.5, 0.1171875, 1.0], [1, 0.291015625, 0.541015625, 0.38671875, 0.76953125], [4, 0.638671875, 0.52734375, 0.31640625, 0.7734375]]}
+			</code>
+		</div>
+
+		<div class="row footer">
+			<div class="col-md-5"></div>
+			<div class="col-md-2">
+				<div class="row">
+					<span class="footer-text">
+						by DatenKrieg<br>
+					</span>
+				</div>
+				<div class="row">
+					<span class="footer-text">
+						2021
+					</span>
+				</div>
+			</div>
+			<div class="col-md-5"></div>
+		</div>
+	</div>
+</body>
+</html>

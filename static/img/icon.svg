@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<svg width="640" height="480" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <g class="layer">
+  <title>Layer 1</title>
+  <ellipse cx="324.499995" cy="238.499995" fill="#00aeff" id="svg_2" rx="214.000005" ry="214.000005" stroke="#ffffff" stroke-width="5"/>
+  <path d="m220.012469,347.497511l0,-134.999992l0,0c0,-57.989894 47.010102,-105.000004 105.000012,-105.000004l0,0l0,0c27.847727,0 54.55489,11.062471 74.246232,30.753789c19.691326,19.691318 30.753773,46.398481 30.753773,74.246215l0,15.000002l29.999979,0l-59.999967,60.000023l-60.000023,-60.000023l30.000004,0l0,-15.000002c0,-24.852808 -20.147197,-44.999989 -44.999989,-44.999989l0,0l0,0c-24.852824,0 -45.000005,20.147181 -45.000005,44.999989l0,134.999992l-60.000015,0z" fill="#ffffff" id="svg_4" stroke="#ffffff" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="5"/>
+ </g>
+</svg>
