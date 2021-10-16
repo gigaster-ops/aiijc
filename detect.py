@@ -57,7 +57,7 @@ def predict(model, stride, names, source, device, save_dir, save_img, save_txt, 
             s += '%gx%g ' % img.shape[2:]  # print string
             gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
             imc = im0  # for save_crop
-            annotator = Annotator(im0, line_width=3, example=str(names))
+            annotator = Annotator(im0, line_width=2, example=str(names))
             if len(det):
                 # Rescale boxes from img_size to im0 size
                 det[:, :4] = scale_coords(img.shape[2:], det[:, :4], im0.shape).round()
@@ -83,7 +83,7 @@ def predict(model, stride, names, source, device, save_dir, save_img, save_txt, 
                     if save_img:  # Add bbox to image
                         c = int(cls)  # integer class
                         label = f'{names[c]} {conf:.2f}'
-                        annotator.box_label(xyxy, label, color=colors(c, True))
+                        annotator.box_label(xyxy, False, color=colors(c, True))
 
             # Print time (inference-only)
             print(f'{s}Done. ({t3 - t2:.3f}s)')
@@ -94,6 +94,8 @@ def predict(model, stride, names, source, device, save_dir, save_img, save_txt, 
             # Save results (image with detections)
             if save_img:
                 if dataset.mode == 'image':
-                    print(save_path)
                     cv2.imwrite(save_path, im0)
-    return output
+    new_output = []
+    for i in output:
+        new_output.append((names[i[0]], i[1:]))
+    return new_output

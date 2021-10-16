@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template, url_for
+from flask import Flask, jsonify, request, render_template, url_for, send_file
 import os, torch
 from pathlib import Path
 from models_ import get_densenet_121
@@ -10,17 +10,17 @@ from detect import get_model, predict
 from flask_ngrok import run_with_ngrok
 
 app = Flask(__name__)
-run_with_ngrok(app)
+#run_with_ngrok(app)
 
 device = torch.device('cpu')
-save_dir = Path('outputs/')
+save_dir = Path('static/outputs/')
 save_img = True
 save_txt = True
 imgsz = 128
 conf_thres = 0.25  # confidence threshold
 iou_thres = 0.45  # NMS IOU threshold
 max_det = 1000
-model, stride, names = get_model(os.path.join('weights', 'best.pt'), torch.device('cpu'))
+model, stride, names = get_model(os.path.join('weights', 'yolov5l.54.pt'), torch.device('cpu'))
 
 val_transform = get_test_transform()
 m = get_densenet_121('cpu', 'checkpoints/DENSE2(128,128).ckpt')
@@ -38,11 +38,16 @@ def predict_():
         # we will get the file from the request
         file = request.files['file']
         # convert that to bytes
-        source = os.path.join('images', get_random_name() + '.jpg')
+        ran = get_random_name() + '.jpg'
+        source = os.path.join('images', ran)
         file.save(source)
         if request.form['model'] == 'classification':
             out = get_class(source, m, transform=val_transform)
             return jsonify({'label': out})
+        elif request.form['model'] == 'detection_for_site':
+            out = predict(model, stride, names, source, device, save_dir, save_img, save_txt, imgsz, conf_thres,
+                          iou_thres, max_det)
+            return url_for('static', filename='outputs/' + ran)
         elif request.form['model'] == 'detection':
             out = predict(model, stride, names, source, device, save_dir, save_img, save_txt, imgsz, conf_thres,
                           iou_thres, max_det)

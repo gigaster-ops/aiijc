@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css')}}">
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+	<link rel="shortcut icon" href="{{ url_for('static', filename='img/icon.svg')}}" type="image/x-icon">
 	<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 	<title> AutoTraffic </title>
 </head>
@@ -75,6 +76,31 @@
 			                console.log(data);
 			            }
 			        });
+
+
+
+
+			        var formData = new FormData(this);
+			        formData.append("model", "detection_for_site");
+
+			        $.ajax({
+			            type:'POST',
+			            url: $(this).attr('action'),
+			            data:formData,
+			            cache:false,
+			            contentType: false,
+			            processData: false,
+			            success:function(data){
+			            	console.log(data);
+			                document.getElementById("thumb").src = data;
+			            },
+			            error: function(data){
+			                console.log("error");
+			                console.log(data);
+			            }
+			        });
+
+
 			    }));
 
 			    $("#ImageBrowse").on("change", function() {

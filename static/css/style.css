@@ -104,4 +104,12 @@ code {
 }
 
 
+.main-img {
+    display: block;
+    margin: auto;
+    margin-bottom: 10px;
+    border: 4px solid rgb(247, 224, 247);
+	border-radius: 10px;
+}
+
 
